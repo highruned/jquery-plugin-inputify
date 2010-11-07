@@ -10,8 +10,19 @@ jQuery(function($) {
         fn.apply(self, ['']);
     })
     .bind('blur', function() {
-      if(fn.apply(self) == '')
-        fn.apply(self, [self.attr('default')]);      
+      var val = fn.apply(self);
+      
+      if(val == '') {
+        fn.apply(self, [self.attr('default')]);
+        
+        self.removeClass('active');
+      }
+      else if(val == self.attr('default')) {
+        self.removeClass('active');
+      }
+      else {
+        self.addClass('active');
+      }
     });
     
     self.trigger('blur');
