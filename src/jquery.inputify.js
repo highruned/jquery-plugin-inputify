@@ -1,30 +1,36 @@
-jQuery(function($) {
-  $('.inputify')
-  .each(function() {
-    var self = $(this);
-    var fn = self.is('input') ? self.val : self.html;
-    
-    self
-    .bind('focus', function() {
-      if(fn.apply(self) == self.attr('default'))
-        fn.apply(self, ['']);
-    })
-    .bind('blur', function() {
-      var val = fn.apply(self);
-      
-      if(val == '') {
-        fn.apply(self, [self.attr('default')]);
-        
-        self.removeClass('active');
-      }
-      else if(val == self.attr('default')) {
-        self.removeClass('active');
-      }
-      else {
-        self.addClass('active');
-      }
-    });
-    
-    self.trigger('blur');
-  });
-});
+function inputify() {
+	jQuery(function($) {
+	  $('input[type=text], textarea')
+	  .livequery(function() {
+	    var self = $(this);
+	    this['default'] = self.val();
+	    var is_inputify = self.hasClass('inputify');
+	    
+	    self
+	    .bind('focus', function() {
+	      if(is_inputify && self.val() == this['default'])
+	        self.val('');
+	    })
+	    .bind('blur', function() {
+	      var val = self.val();
+	      
+	      if(val == '') {
+	        if(is_inputify)
+	          self.val(this['default']);
+	        
+	        self.removeClass('active');
+	      }
+	      else if(val == this['default']) {
+	        self.removeClass('active');
+	      }
+	      else {
+	        self.addClass('active');
+	      }
+	    });
+	    
+	    self.trigger('blur');
+	  });
+	});
+};
+
+inputify();
